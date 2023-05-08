@@ -87,7 +87,9 @@ plot(Matrix(plotdf))
  
 
 
-stop()
+using TidierPlots
+
+@ggplot(data = adf) + @geom_point(aes(x=step, y = sum_infected, color=ensemble))
 
 
 using GraphPlot
