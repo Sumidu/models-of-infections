@@ -73,7 +73,7 @@ l_df.cumulative_sum = cumsum(l_df.Einwohner)
 
 our_df = select(l_df, :x_mp_1km, :y_mp_1km, :Einwohner)
 
-our_m = reshape(our_df.Einwohner,  ,: )
+our_m = reshape(our_df.Einwohner, 16 ,: )
 
 scatter(our_df.x_mp_1km, our_df.y_mp_1km)
 
