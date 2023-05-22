@@ -33,12 +33,52 @@ g.restrictions
 
 using CSV
 using DataFrames
-df = CSV.read("Zensus_klassierte_Werte_1km-Gitter.csv", DataFrame)
+df = CSV.read("Zensus_spitze_Werte_1km-Gitter.csv", DataFrame)
 
 
-populated_areas = df[df.Einwohner .!= -1,:]
+a = (1,2,3)
+a .!= 2
+
+
+populated_areas = df[df.Einwohner .!= -1, :]
 dd = select(populated_areas, [:x_mp_1km, :y_mp_1km])
 
+using Plots
+using Statistics
 
-using InteractiveViz, GLMakie
-InteractiveViz.iscatter(dd.x_mp_1km, dd.y_mp_1km; cursor=true)
+x_width = (maximum(df.x_mp_1km) - minimum(df.x_mp_1km)) / 1000
+y_width = (maximum(df.y_mp_1km) - minimum(df.y_mp_1km)) / 1000
+
+Plots.scatter(populated_areas.x_mp_1km,populated_areas.y_mp_1km, markersize = 1)
+
+l_x = (4359000, 4373000)
+l_y = (3409000, 3424000)
+
+
+Plots.heatmap(df.x_mp_1km,
+              df.y_mp_1km,
+              df.Einwohner)
+
+
+
+
+df.Einwohner
+reshape(df.Einwohner, 866, :)
+
+
+
+l_df = df[(df.x_mp_1km .> l_x[1]) .& (df.x_mp_1km .< l_x[2]) .& (df.y_mp_1km .> l_y[1]) .& (df.y_mp_1km .< l_y[2]) .& (df.Einwohner .!= -1), :]
+
+l_df.cumulative_sum = cumsum(l_df.Einwohner)
+
+our_df = select(l_df, :x_mp_1km, :y_mp_1km, :Einwohner)
+
+our_m = reshape(our_df.Einwohner,  ,: )
+
+scatter(our_df.x_mp_1km, our_df.y_mp_1km)
+
+heatmap(reverse(our_m', dims= 1))
+
+
+
+rand(1:215218)
